@@ -1,0 +1,61 @@
+@startuml
+
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+skinparam roundcorner 5
+skinparam shadowing true
+skinparam class {
+    BackgroundColor white
+    ArrowColor #2688d4
+    BorderColor #2688d4
+}
+
+'Таблица пользователей'
+entity "User" as U {
+    Таблица пользователей
+
+    *id : number <<generated>> primary key
+    *name: string
+    *email: string
+    *password: string
+    *created_at: DateTime
+    *updated_at: DateTime
+}
+
+'Таблица с категориями для постов'
+entity "Category" as Cat {
+    Таблица с категориями
+    *id: number <<generate>> primary key
+    *name: string
+    *parent_id: int
+    *created_at: DateTime
+    *updated_at: DateTime
+}
+
+'Таблица постов
+entity "Post" as P {
+    Таблица постов пользователей
+
+    *id: number <<generate>> primary key
+    *user_id: User.id foreign key
+    *title: string
+    *content: string
+    *created_at: DateTime
+    *updated_at: DateTime
+}
+
+'id-шники постов и категорий
+entity "PostCategory" as PC {
+    Таблица с id постов и категорий
+
+    *post_id: Post.id foreign key 
+    *category_id: Category.id
+}
+
+Cat }o- PC
+P }o- PC
+U ||--o{ P
+
+@enduml
